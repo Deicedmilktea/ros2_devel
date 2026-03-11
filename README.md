@@ -153,8 +153,6 @@ ros2_devel/
 ## 构建
 
 ```bash
-cd /home/reeve/Desktop/ros2_devel
-source /opt/ros/humble/setup.bash
 colcon build
 source install/setup.bash
 ```
@@ -164,8 +162,6 @@ source install/setup.bash
 ### 一键启动完整系统
 
 ```bash
-cd /home/reeve/Desktop/ros2_devel
-source /opt/ros/humble/setup.bash
 source install/setup.bash
 ros2 launch smart_classroom_demo classroom_demo.launch.py
 ```
