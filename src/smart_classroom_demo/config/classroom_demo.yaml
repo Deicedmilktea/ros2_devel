@@ -3,12 +3,13 @@ teacher_node:
     class_name: "ROS 2 Humble 课堂演示"
     classroom: "A101"
     notice_text: "开始上课，请同学们完成签到"
-    publish_on_start: true
+    auto_start_enabled: true
     publish_period_sec: 0.0
 
 office_node:
   ros__parameters:
     class_name: "ROS 2 Humble 课堂演示"
+    allow_unknown_students: false
     expected_students:
       - "张三"
       - "李四"
@@ -17,8 +18,27 @@ office_node:
 
 dashboard_node:
   ros__parameters:
+    refresh_on_event_only: true
     expected_students:
       - "张三"
       - "李四"
       - "王五"
       - "赵六"
+
+student_zhangsan:
+  ros__parameters:
+    student_name: "张三"
+    auto_signin_delay: 5.0
+    auto_signin_enabled: true
+
+student_lisi:
+  ros__parameters:
+    student_name: "李四"
+    auto_signin_delay: 10.0
+    auto_signin_enabled: true
+
+student_wangwu:
+  ros__parameters:
+    student_name: "王五"
+    auto_signin_delay: 15.0
+    auto_signin_enabled: true

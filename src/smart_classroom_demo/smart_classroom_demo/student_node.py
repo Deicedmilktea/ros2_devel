@@ -14,16 +14,30 @@ class StudentNode(Node):
         super().__init__("student_node")
         self.declare_parameter("student_name", "张三")
         self.declare_parameter("auto_signin_delay", 1.0)
+        self.declare_parameter("auto_signin_enabled", True)
 
-        self.student_name = self.get_parameter("student_name").get_parameter_value().string_value
+        self.student_name = (
+            self.get_parameter("student_name")
+            .get_parameter_value()
+            .string_value
+        )
         self.auto_signin_delay = (
-            self.get_parameter("auto_signin_delay").get_parameter_value().double_value
+            self.get_parameter("auto_signin_delay")
+            .get_parameter_value()
+            .double_value
+        )
+        self.auto_signin_enabled = (
+            self.get_parameter("auto_signin_enabled")
+            .get_parameter_value()
+            .bool_value
         )
 
         self.notice_subscription = self.create_subscription(
             String, "/class_notice", self.notice_callback, 10
         )
-        self.attendance_publisher = self.create_publisher(String, "/attendance", 10)
+        self.attendance_publisher = self.create_publisher(
+            String, "/attendance", 10
+        )
 
         # last_signed_round 防止同一轮重复签到；
         # pending_round / pending_timer 表示“已经收到通知，但还在等待延迟签到”。
@@ -33,7 +47,8 @@ class StudentNode(Node):
 
         self.get_logger().info(
             f"StudentNode 已启动: student_name={self.student_name}, "
-            f"auto_signin_delay={self.auto_signin_delay:.1f}s"
+            f"auto_signin_delay={self.auto_signin_delay:.1f}s, "
+            f"auto_signin_enabled={self.auto_signin_enabled}"
         )
 
     def notice_callback(self, msg: String) -> None:
@@ -70,6 +85,11 @@ class StudentNode(Node):
             f"{self.student_name} 收到课堂通知: 第 {round_id} 轮, "
             f"课程={class_name}, 教室={classroom}, 内容={notice}"
         )
+        if not self.auto_signin_enabled:
+            self.get_logger().info(
+                f"{self.student_name} 当前关闭自动签到，仅接收通知不发送签到。"
+            )
+            return
         self.get_logger().info(
             f"{self.student_name} 将在 {self.auto_signin_delay:.1f} 秒后自动签到。"
         )

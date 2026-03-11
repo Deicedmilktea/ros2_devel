@@ -12,14 +12,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from ament_flake8.main import main_with_errors
+from pathlib import Path
+import subprocess
+
 import pytest
 
 
 @pytest.mark.flake8
 @pytest.mark.linter
 def test_flake8():
-    rc, errors = main_with_errors(argv=[])
-    assert rc == 0, \
-        'Found %d code style errors / warnings:\n' % len(errors) + \
-        '\n'.join(errors)
+    package_root = Path(__file__).resolve().parents[1]
+    result = subprocess.run(
+        [
+            'python3',
+            '-m',
+            'flake8',
+            'smart_classroom_demo',
+            'test',
+            '--jobs',
+            '1',
+        ],
+        cwd=package_root,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert result.returncode == 0, (
+        'Found code style errors / warnings:\n'
+        f'{result.stdout}{result.stderr}'
+    )
