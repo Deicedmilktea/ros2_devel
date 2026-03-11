@@ -1,0 +1,24 @@
+teacher_node:
+  ros__parameters:
+    class_name: "ROS 2 Humble 课堂演示"
+    classroom: "A101"
+    notice_text: "开始上课，请同学们完成签到"
+    publish_on_start: true
+    publish_period_sec: 0.0
+
+office_node:
+  ros__parameters:
+    class_name: "ROS 2 Humble 课堂演示"
+    expected_students:
+      - "张三"
+      - "李四"
+      - "王五"
+      - "赵六"
+
+dashboard_node:
+  ros__parameters:
+    expected_students:
+      - "张三"
+      - "李四"
+      - "王五"
+      - "赵六"
